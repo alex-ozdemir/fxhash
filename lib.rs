@@ -24,6 +24,13 @@
 //! not designed to prevent any attacks for determining collisions which could be used to
 //! potentially cause quadratic behavior in `HashMap`s.  So it is not recommended to expose
 //! this hash in places where collissions or DDOS attacks may be a concern.
+//!
+//! ## Determinism
+//!
+//! [FxHashMap] and [FxHashSet] have *deterministic iteration order*. That is, any two distinct
+//! collections constructed via the same sequence of operations will iterate over their contents in
+//! the same order. This order is **not** guaranteed to be preserved between different
+//! (non-breaking) releases of `fxhash`.
 
 use std::collections::{HashMap, HashSet};
 use std::default::Default;
@@ -34,6 +41,9 @@ extern crate byteorder;
 use byteorder::{ByteOrder, NativeEndian};
 
 /// A builder for default Fx hashers.
+///
+/// This builder is deterministic: all hashers constructed with it will yield the same hashes with
+/// applied to the same inputs.
 pub type FxBuildHasher = BuildHasherDefault<FxHasher>;
 
 /// A `HashMap` using a default Fx hasher.
